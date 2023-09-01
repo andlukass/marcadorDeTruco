@@ -1,0 +1,23 @@
+
+.buttonContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.nameButton{
+	margin: 10%;
+	width: 30%;
+	border-radius: 15px;
+	background-color: rgb(75, 140, 82);
+	font-size: 30px;
+}
+
+.placeholder-red {
+	color: rgb(205, 101, 101);
+}
+
+.placeholder-red::placeholder{
+	color: rgb(205, 101, 101);
+}

@@ -1,0 +1,72 @@
+.counter {
+	margin: auto;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.counter h1 {
+	font-size: 120px;
+}
+
+.line {
+	height: 40vh;
+	margin-bottom: 2vh;
+	border: 1px solid white;
+}
+
+.titleBox {
+	margin: auto;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	flex-direction: column;
+	justify-content: center;
+	margin-top: 50px;
+	height: 13vh;
+	/* border: 2px solid black; */
+}
+
+.edit {
+	z-index: 10000;
+	height: 15%;
+	flex-wrap: nowrap;
+}
+
+.title{
+	display: flex;
+	align-items: center;
+	text-align: center;
+	/* border: 2px solid rgb(255, 2, 2); */
+	justify-content: center;
+	width: 35vw;
+	height: 85%;
+}
+
+.buttonsBox {
+	margin-bottom: 50px;
+	display: flex;
+}
+
+.pointsButton {
+	position: relative;
+	background-color: rgb(75, 140, 82);
+	border-radius: 50px;
+	border: 1px solid rgb(255, 255, 255);
+	width: 10vw;
+	height: 10vw;
+	margin: 20px;
+	padding-top: -5px;
+	font-size: 30px;
+	color: rgb(255, 255, 255);
+	font-weight: bolder;
+}
+
+.pointsButton span {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
