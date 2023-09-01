@@ -27,10 +27,13 @@ body {
 }
 
 .add {
-	margin-top: -100px;
+	position: absolute;
 	margin-bottom: 50px;
 	font-size: 0.8rem;
 	opacity: 0.7;
+	top: 13%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .image {
@@ -42,4 +45,5 @@ body {
 .principal {
 	display: flex;
 	align-items: center;
+	margin-top: 30px;
 }
