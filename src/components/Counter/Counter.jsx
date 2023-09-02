@@ -70,7 +70,7 @@ function Counter(props) {
 						whiteSpace: 'pre-line'}}>{teamName}</h3>
 					</div>
 				</div>
-				<h2>{props.team.points}</h2>
+				<h1>{props.team.points}</h1>
 				<div className="buttonsBox">
 					<div className="pointsButton" onClick={() => handleClick(-1)}>
 						<span> - </span> 
