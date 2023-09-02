@@ -20,16 +20,10 @@ function Counter(props) {
 			setTeamName(props.team.name);
 			newSize = 180 / length;
 		} else if (length > 10 && length < 20) {
-			let string = props.team.name.slice(0, props.team.name.length/1.5)
-			let spaces = string.split(" ").length - 1;
-			if (spaces) {
-				setTeamName(props.team.name);
-			} else {
-				setTeamName(breakLine(props.team.name));
-			}
+			setTeamName(breakLine(props.team.name));
 			newSize = 23;
 		} else {
-			setTeamName(props.team.name.slice(0, 16) + '...');
+			setTeamName(breakLine(props.team.name).slice(0, 16) + '...');
 			newSize = 23;
 		}
 		setFontSize(newSize);
@@ -40,9 +34,13 @@ function Counter(props) {
 		let half = string.length/2
 		let part1 = string.slice(0, half);
 		let part2 = string.slice(half, string.length);
-		console.log(part1, part2, half)
 		let full = part1 + "-\n" + part2;
-		return full;
+		let spaces = string.split(" ").length - 1;
+		if (spaces) {
+			return string;
+		} else {
+			return full;
+		}
 	}
 
 	const onOpen = () => {
