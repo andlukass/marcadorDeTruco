@@ -31,7 +31,10 @@ function Counter(props) {
 	}, [props.team.name]);
 
 	const breakLine = (string) => {
-		let half = string.length/2
+		let half = Math.floor(string.length / 2);
+		if (string.length > 16) {
+			half = 8;
+		}
 		let part1 = string.slice(0, half);
 		let part2 = string.slice(half, string.length);
 		let full = part1 + "-\n" + part2;
