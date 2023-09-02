@@ -13,7 +13,7 @@ function Counter(props) {
 		
 		let length = props.team.name.length;
 		let newSize;
-		if (length >= 1 || length <= 4) {
+		if (length >= 1 && length <= 4) {
 			setTeamName(props.team.name);
 			newSize = 45;
 		} else if (length > 4 && length <= 10) {
@@ -33,6 +33,7 @@ function Counter(props) {
 			newSize = 23;
 		}
 		setFontSize(newSize);
+		console.log(length, newSize)
 	}, [props.team.name]);
 
 	const breakLine = (string) => {
@@ -65,10 +66,11 @@ function Counter(props) {
 						<BsPencilSquare />
 					</div>
 					<div className="title">
-					<h3 style={{ fontSize: `${fontSize}px` }}>{teamName}</h3>
+					<h3 style={{ fontSize: `${fontSize}px`,
+						whiteSpace: 'pre-line'}}>{teamName}</h3>
 					</div>
 				</div>
-				<h1>{props.team.points}</h1>
+				<h2>{props.team.points}</h2>
 				<div className="buttonsBox">
 					<div className="pointsButton" onClick={() => handleClick(-1)}>
 						<span> - </span> 
