@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
   max-width: 1280px;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -12,38 +16,35 @@
 }
 
 * {
-	margin: 0 auto;
-	padding: 0;
-	text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-	background-image: url("./assets/background.jpeg");
-	display: flex;
-	place-items: center;
-	min-width: 320px;
-	min-height: 100vh;
-	overflow: hidden;
+  background-image: url("./assets/background.jpeg");
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .add {
-	position: absolute;
-	margin-bottom: 50px;
-	font-size: 0.8rem;
-	opacity: 0.7;
-	top: 13%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  position: absolute;
+  margin-bottom: 50px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  top: 13%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .image {
-	width: 180px;
-	height: 80px;
-	border-radius: 25px;
+  width: 180px;
+  height: 80px;
+  border-radius: 25px;
 }
 
 .principal {
-	display: flex;
-	align-items: center;
-	margin-top: 30px;
+  display: flex;
+  margin-top: 30px;
 }
