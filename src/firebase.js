@@ -1,4 +1,10 @@
 import { initializeApp } from "firebase/app";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
 import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -13,7 +19,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
 export const onAnalyticsEvent = (eventName) => {
   logEvent(analytics, eventName);
+};
+
+export const onFirestoreEvent = (eventName, location) => {
+  addDoc(collection(db, "logs"), {
+    date: serverTimestamp(),
+    location,
+    eventName,
+  });
 };

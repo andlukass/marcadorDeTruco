@@ -3,11 +3,11 @@ import Counter from "./components/Counter/Counter";
 import { BsXCircleFill } from "react-icons/bs";
 import logo42 from "./assets/42.png";
 
-import { onAnalyticsEvent } from "./firebase";
-
 import "./App.css";
+import { onAnalyticsEvent, onFirestoreEvent } from "./firebase";
 
 function App() {
+  const [location, setLocation] = useState(undefined);
   const [teamOne, setTeamOne] = useState({
     name: "Nós",
     points: 0,
@@ -39,12 +39,37 @@ function App() {
 
   const clear = () => {
     onAnalyticsEvent("scoreCleared");
+    onFirestoreEvent("scoreCleared", location || "unknown");
+    console.log("score_cleared");
     setTeamOne({ ...teamOne, points: 0 });
     setTeamTwo({ ...teamTwo, points: 0 });
   };
 
   useEffect(() => {
+    if (location === undefined) return;
     onAnalyticsEvent("gameStarted");
+    onFirestoreEvent("gameStarted", location || "unknown");
+  }, [location]);
+
+  useEffect(() => {
+    const fetchGeoData = async () => {
+      fetch("https://ipapi.co/json/")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setLocation(data?.country_name);
+        })
+        .catch((error) => {
+          setLocation(null);
+          console.error("Error fetching IP and location:", error);
+        });
+    };
+
+    fetchGeoData();
   }, []);
 
   return (
