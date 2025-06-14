@@ -1,7 +1,8 @@
 import ChangeName from "../ChangeName/ChangeName";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
-import "./Counter.css";
+import { FaPlus } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa";
 
 function Counter(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,30 +60,30 @@ function Counter(props) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
-      <div className="counter" style={{ userSelect: "none" }}>
-        <div className="titleBox">
-          <div className="cursor-pointer" onClick={onOpen}>
-            <BsPencilSquare />
-          </div>
-          <div className="title">
+      <div className={`mx-auto flex flex-col items-center justify-center text-center select-none ${props.className}`}>
+        <div className="mx-auto mt-[50px] flex h-[13vh] flex-col items-center justify-center text-center cursor-pointer active:scale-95 transition-all duration-300" onClick={onOpen}>
+          <BsPencilSquare />
+          <div className="flex items-center justify-center text-center mt-1">
             <h3 style={{ fontSize: `${fontSize}px`, whiteSpace: "pre-line" }}>
               {teamName}
             </h3>
           </div>
         </div>
-        <h1>{props.team.points}</h1>
-        <div style={{ cursor: "pointer" }} className="buttonsBox">
-          <div
-            className="pointsButton flex items-center justify-center"
-            onClick={() => handleClick(-1)}
-          >
-            <span className="-mt-2"> - </span>
+        <div className="flex items-center justify-center w-full cursor-pointer active:scale-[0.80] transition-all duration-300" onClick={() => handleClick(1)}>
+          <h1 className="text-[120px] font-bold">{props.team.points}</h1>
+        </div>
+        <div className="mb-[50px] flex cursor-pointer">
+          <div onClick={() => handleClick(-1)} className="flex items-center justify-center active:scale-[0.80] transition-all duration-300">
+            <div
+              className="flex h-[50px] w-[50px] items-center justify-center rounded-[50px] border-2 border-white bg-[rgb(75,140,82)] text-[30px] font-bold text-white m-5"
+              >
+              <FaMinus className="text-white w-4 h-4" />
+            </div>
           </div>
-          <div
-            className="pointsButton  flex items-center justify-center"
-            onClick={() => handleClick(1)}
-          >
-            <span className="-mt-2"> + </span>
+          <div onClick={() => handleClick(1)} className="flex items-center justify-center active:scale-[0.80] transition-all duration-300">
+            <div className="flex h-[50px] w-[50px] items-center justify-center rounded-[50px] border-2 border-white bg-[rgb(75,140,82)] text-[30px] font-bold text-white m-5">
+              <FaPlus className="text-white w-4 h-4" />
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./changeName.css";
 import Modal from "../modal/modal";
 
 function ChangeName(props) {
@@ -22,13 +21,13 @@ function ChangeName(props) {
         </span>
         <div className="flex w-full flex-col items-center justify-center gap-3">
           <input
-            className="!bg-white border !border-gray-500 text-2xl text-gray-900 rounded-md h-10 w-60 p-2 mt-2 outline-none"
+            className="!bg-white border placeholder:text-gray-400  !border-gray-500 text-2xl text-gray-900 rounded-md h-10 w-60 p-2 mt-2 outline-none"
             placeholder="Digite um nome..."
             onChange={handleInputChange}
           />
           <div
             onClick={handleClick}
-            className="w-full cursor-pointer select-none h-10 flex rounded-xl items-center justify-center bg-green-700"
+            className="w-full cursor-pointer select-none h-10 flex rounded-xl items-center justify-center bg-[rgb(75,140,82)]"
           >
             <span className="text-white text-lg font-bold">✓</span>
           </div>

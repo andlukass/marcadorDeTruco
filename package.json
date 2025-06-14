@@ -6,15 +6,29 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "deploy": "vite build && firebase deploy --only hosting",
+    "postbuild": "react-snap",
+    "deploy": "vite build && react-snap && firebase deploy --only hosting",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
+  },
+  "reactSnap": {
+    "include": ["/", "/marcador-de-truco", "/anotador-de-truco", "/placar-de-truco", "/contador-de-truco"],
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "minifyHtml": {
+      "collapseWhitespace": false,
+      "removeComments": false
+    },
+    "source": "dist",
+    "destination": "dist",
+    "skipThirdPartyRequests": true
   },
   "dependencies": {
     "firebase": "^11.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.5",
     "react-icons": "^4.10.1",
+    "react-router-dom": "^7.6.2",
     "styled-components": "^6.0.7"
   },
   "devDependencies": {
@@ -27,6 +41,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.49",
+    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.16",
     "vite": "^4.4.5",
     "vite-plugin-pwa": "^0.16.4",

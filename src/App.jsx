@@ -1,107 +1,72 @@
-import { useEffect, useState } from "react";
-import Counter from "./components/Counter/Counter";
-import { BsXCircleFill } from "react-icons/bs";
-import logo42 from "./assets/42.png";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import TrucoScore from "./pages/TrucoScore";
 import "./App.css";
-import { onAnalyticsEvent, onFirestoreEvent } from "./firebase";
 
 function App() {
-  const [location, setLocation] = useState(undefined);
-  const [teamOne, setTeamOne] = useState({
-    name: "Nós",
-    points: 0,
-    victories: 0,
-  });
-  const [teamTwo, setTeamTwo] = useState({
-    name: "Eles",
-    points: 0,
-    victories: 0,
-  });
-
-  const pointsChange = (teamName, change) => {
-    if (teamName == teamOne.name) {
-      let newPoints = Math.min(12, Math.max(0, teamOne.points + change));
-      setTeamOne({ ...teamOne, points: newPoints });
-    } else {
-      let newPoints = Math.min(12, Math.max(0, teamTwo.points + change));
-      setTeamTwo({ ...teamTwo, points: newPoints });
-    }
-  };
-
-  const nameChange = (teamName, newName) => {
-    if (teamName == teamOne.name) {
-      setTeamOne({ ...teamOne, name: newName });
-    } else {
-      setTeamTwo({ ...teamTwo, name: newName });
-    }
-  };
-
-  const clear = () => {
-    onAnalyticsEvent("scoreCleared");
-    onFirestoreEvent("scoreCleared", location || "unknown");
-    console.log("score_cleared");
-    setTeamOne({ ...teamOne, points: 0 });
-    setTeamTwo({ ...teamTwo, points: 0 });
-  };
-
-  useEffect(() => {
-    if (location === undefined) return;
-    onAnalyticsEvent("gameStarted");
-    onFirestoreEvent("gameStarted", location || "unknown");
-  }, [location]);
-
-  useEffect(() => {
-    const fetchGeoData = async () => {
-      fetch("https://ipapi.co/json/")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setLocation(data?.country_name);
-        })
-        .catch((error) => {
-          setLocation(null);
-          console.error("Error fetching IP and location:", error);
-        });
-    };
-
-    fetchGeoData();
-  }, []);
+  const isBrowser = typeof window !== "undefined";
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center">
-        <div className="add">
-          <span className="ml-6">um oferecimento...</span>
-          <img src={logo42} alt="Imagem" className="image mt-1" />
-        </div>
-        <div className="principal items-center justify-center">
-          <Counter
-            team={teamOne}
-            nameChange={nameChange}
-            pointsChange={pointsChange}
-            className={"teste"}
+    <HelmetProvider>
+      {isBrowser ? (
+        <Router>
+          <Routes>
+            <Route
+              path="/marcador-de-truco"
+              element={
+                <TrucoScore
+                  title="Marcador de Truco Online | Controle de Pontos"
+                  description="Marcador de truco online gratuito. Controle os pontos da sua partida de truco de forma simples e intuitiva. Perfeito para jogos de truco paulista, mineiro e gaúcho."
+                />
+              }
+            />
+            <Route
+              path="/anotador-de-truco"
+              element={
+                <TrucoScore
+                  title="Anotador de Truco | Controle Suas Partidas"
+                  description="Anotador de truco online para controlar suas partidas. Interface simples e prática para marcar pontos no truco. Ideal para jogos casuais e campeonatos."
+                />
+              }
+            />
+            <Route
+              path="/placar-de-truco"
+              element={
+                <TrucoScore
+                  title="Placar de Truco Digital | Marque Seus Pontos"
+                  description="Placar digital de truco para suas partidas. Marque os pontos de forma rápida e precisa. Suporte para diferentes estilos de truco brasileiro."
+                />
+              }
+            />
+            <Route
+              path="/contador-de-truco"
+              element={
+                <TrucoScore
+                  title="Contador de Truco | Marque Pontos Online"
+                  description="Contador de truco online gratuito. Marque os pontos da sua partida de truco de forma prática. Perfeito para jogos de truco em qualquer lugar."
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <TrucoScore
+                  title="Truco Score | Placar Digital para Truco"
+                  description="Placar digital gratuito para truco. Marque seus pontos de forma rápida e eficiente. Ideal para partidas casuais e campeonatos de truco em qualquer estilo."
+                />
+              }
+            />
+          </Routes>
+        </Router>
+      ) : (
+        <div>
+          <TrucoScore
+            title="Truco Score | Placar Digital para Truco"
+            description="Placar digital gratuito para truco. Marque seus pontos de forma rápida e eficiente. Ideal para partidas casuais e campeonatos de truco em qualquer estilo."
           />
-          <div className="line"></div>
-          <Counter
-            team={teamTwo}
-            nameChange={nameChange}
-            pointsChange={pointsChange}
-          />
         </div>
-        <div
-          className="cursor-pointer select-none flex gap-2 border-2 rounded-2xl p-3"
-          onClick={clear}
-        >
-          <span style={{ marginTop: -1, fontWeight: 600 }}>zerar partida</span>
-          <BsXCircleFill color="#ff6c64" className="bg-white rounded-full" />
-        </div>
-      </div>
-    </div>
+      )}
+    </HelmetProvider>
   );
 }
 
