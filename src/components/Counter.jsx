@@ -1,4 +1,4 @@
-import ChangeName from "../ChangeName/ChangeName";
+import ChangeName from "./ChangeName";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa";

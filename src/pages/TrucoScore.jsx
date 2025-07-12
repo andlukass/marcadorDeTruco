@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import Counter from "../components/Counter/Counter";
+import Counter from "../components/Counter";
 import { BsXCircleFill } from "react-icons/bs";
 import logo42 from "../assets/42.png";
 import { onAnalyticsEvent, onFirestoreEvent } from "../firebase";
@@ -85,10 +85,10 @@ function TrucoScore({ title, description }) {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
       </Helmet>
-      <div className="h-screen overflow-y-auto relative">
+      <div className="h-screen overflow-y-auto relative overflow-x-hidden scrollbar-hide">
         <section className="h-screen w-screen flex items-center justify-center">
           <div className="flex flex-col items-center justify-center w-full">
-            <div className="absolute top-[13%] left-1/2 -translate-x-1/2 -translate-y-1/2 mb-[50px] text-[0.8rem] opacity-70">
+            <div className="-mt-32 flex flex-col items-center justify-center text-[0.8rem] opacity-70">
               <span className="ml-6">um oferecimento...</span>
               <img src={logo42} alt="Imagem" className="w-[180px] h-[80px] rounded-[25px] mt-1" />
             </div>

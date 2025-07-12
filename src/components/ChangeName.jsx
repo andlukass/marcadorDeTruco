@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "../modal/modal";
+import Modal from "./Modal";
 
 function ChangeName(props) {
   const [inputName, setInputName] = useState("");

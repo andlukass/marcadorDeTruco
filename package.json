@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prebuild": "rm -rf dist",
     "postbuild": "react-snap",
-    "deploy": "vite build && react-snap && firebase deploy --only hosting",
+    "deploy": "npm run build && firebase deploy --only hosting",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
