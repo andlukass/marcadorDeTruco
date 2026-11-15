@@ -1,3 +1,4 @@
+import type { Location } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   addDoc,
@@ -21,11 +22,11 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-export const onAnalyticsEvent = (eventName) => {
+export const onAnalyticsEvent = (eventName: string) => {
   logEvent(analytics, eventName);
 };
 
-export const onFirestoreEvent = (eventName, location) => {
+export const onFirestoreEvent = (eventName: string, location: Location | "unknown") => {
   addDoc(collection(db, "logs"), {
     date: serverTimestamp(),
     location,

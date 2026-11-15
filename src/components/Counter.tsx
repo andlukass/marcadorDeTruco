@@ -1,16 +1,24 @@
+import type { Team } from "../types";
 import ChangeName from "./ChangeName";
 import { useState, useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 
-function Counter(props) {
+interface CounterProps {
+  team: Team;
+  nameChange: (teamName: string, newName: string) => void;
+  pointsChange: (teamName: string, change: number) => void;
+  className?: string;
+}
+
+function Counter(props: CounterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [fontSize, setFontSize] = useState(35);
   const [teamName, setTeamName] = useState("");
 
   useEffect(() => {
-    let length = props.team.name.length;
+    const length = props.team.name.length;
     let newSize;
     if (length >= 1 && length <= 4) {
       setTeamName(props.team.name);
@@ -28,15 +36,15 @@ function Counter(props) {
     setFontSize(newSize);
   }, [props.team.name]);
 
-  const breakLine = (string) => {
+  const breakLine = (string: string) => {
     let half = Math.floor(string.length / 2);
     if (string.length > 16) {
       half = 8;
     }
-    let part1 = string.slice(0, half);
-    let part2 = string.slice(half, string.length);
-    let full = part1 + "-\n" + part2;
-    let spaces = string.split(" ").length - 1;
+    const part1 = string.slice(0, half);
+    const part2 = string.slice(half, string.length);
+    const full = part1 + "-\n" + part2;
+    const spaces = string.split(" ").length - 1;
     if (spaces) {
       return string;
     } else {
@@ -48,7 +56,7 @@ function Counter(props) {
     setIsOpen(true);
   };
 
-  const handleClick = (change) => {
+  const handleClick = (change: number) => {
     props.pointsChange(props.team.name, change);
   };
 

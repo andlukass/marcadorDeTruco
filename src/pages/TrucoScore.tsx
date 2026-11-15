@@ -1,3 +1,4 @@
+import type { Team } from "../types";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Counter from "../components/Counter";
@@ -7,32 +8,37 @@ import { onAnalyticsEvent, onFirestoreEvent } from "../firebase";
 import { texts } from "../assets/texts";
 import { useLocation } from "react-router-dom";
 
-function TrucoScore({ title, description }) {
+interface TrucoScoreProps {
+  title: string;
+  description: string;
+}
+
+function TrucoScore({ title, description }: TrucoScoreProps) {
   const location = useLocation();
-  const [countryLocation, setCountryLocation] = useState(null);
+  const [, setCountryLocation] = useState<string | null>(null);
   const currentText = texts.find(text => text.path === location.pathname) || texts[0];
-  const [teamOne, setTeamOne] = useState({
+  const [teamOne, setTeamOne] = useState<Team>({
     name: "Nós",
     points: 0,
     victories: 0,
   });
-  const [teamTwo, setTeamTwo] = useState({
+  const [teamTwo, setTeamTwo] = useState<Team>({
     name: "Eles",
     points: 0,
     victories: 0,
   });
 
-  const pointsChange = (teamName, change) => {
+  const pointsChange = (teamName: string, change: number) => {
     if (teamName == teamOne.name) {
-      let newPoints = Math.min(12, Math.max(0, teamOne.points + change));
+      const newPoints = Math.min(12, Math.max(0, teamOne.points + change));
       setTeamOne({ ...teamOne, points: newPoints });
     } else {
-      let newPoints = Math.min(12, Math.max(0, teamTwo.points + change));
+      const newPoints = Math.min(12, Math.max(0, teamTwo.points + change));
       setTeamTwo({ ...teamTwo, points: newPoints });
     }
   };
 
-  const nameChange = (teamName, newName) => {
+  const nameChange = (teamName: string, newName: string) => {
     if (teamName == teamOne.name) {
       setTeamOne({ ...teamOne, name: newName });
     } else {

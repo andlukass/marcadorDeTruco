@@ -1,10 +1,18 @@
+import type { ChangeEvent } from "react";
 import { useState } from "react";
 import Modal from "./Modal";
 
-function ChangeName(props) {
+interface ChangeNameProps {
+  teamName: string;
+  nameChange: (teamName: string, newName: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function ChangeName(props: ChangeNameProps) {
   const [inputName, setInputName] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputName(e.target.value);
   };
 
