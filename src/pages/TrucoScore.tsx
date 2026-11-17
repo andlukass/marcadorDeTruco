@@ -2,21 +2,19 @@ import type { Team } from "../types";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Counter from "../components/Counter";
-import { BsXCircleFill } from "react-icons/bs";
-import logo42 from "../assets/42.png";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 import { onAnalyticsEvent, onFirestoreEvent } from "../firebase";
-import { texts } from "../assets/texts";
-import { useLocation } from "react-router-dom";
+import seo from "../assets/seo.json";
+import { Link, useLocation } from "react-router-dom";
 
-interface TrucoScoreProps {
-  title: string;
-  description: string;
-}
+const handValues = [1, 3, 6, 9, 12];
 
-function TrucoScore({ title, description }: TrucoScoreProps) {
+function TrucoScore({ page }: { page: (typeof seo.pages)[number] }) {
+  const { title, description } = page;
+  const canonical = seo.origin + page.path;
+  const image = seo.origin + "/android-chrome-512x512.png";
   const location = useLocation();
   const [, setCountryLocation] = useState<string | null>(null);
-  const currentText = texts.find(text => text.path === location.pathname) || texts[0];
   const [teamOne, setTeamOne] = useState<Team>({
     name: "Nós",
     points: 0,
@@ -28,25 +26,13 @@ function TrucoScore({ title, description }: TrucoScoreProps) {
     victories: 0,
   });
 
-  const pointsChange = (teamName: string, change: number) => {
-    if (teamName == teamOne.name) {
-      const newPoints = Math.min(12, Math.max(0, teamOne.points + change));
-      setTeamOne({ ...teamOne, points: newPoints });
-    } else {
-      const newPoints = Math.min(12, Math.max(0, teamTwo.points + change));
-      setTeamTwo({ ...teamTwo, points: newPoints });
-    }
-  };
-
-  const nameChange = (teamName: string, newName: string) => {
-    if (teamName == teamOne.name) {
-      setTeamOne({ ...teamOne, name: newName });
-    } else {
-      setTeamTwo({ ...teamTwo, name: newName });
-    }
-  };
+  const [handLevel, setHandLevel] = useState(0);
+  const handValue = handValues[handLevel];
+  const nextValue = handValues[handLevel + 1];
+  const resetHand = () => setHandLevel(0);
 
   const clear = () => {
+    resetHand();
     onAnalyticsEvent("scoreCleared");
     onFirestoreEvent("scoreCleared", location || "unknown");
     console.log("score_cleared");
@@ -83,7 +69,21 @@ function TrucoScore({ title, description }: TrucoScoreProps) {
 
   return (
     <>
-      <Helmet>
+      <Helmet defer={false}>
+        <link rel="canonical" href={canonical} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:image" content={image} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image" content={image} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org", "@type": "WebPage", url: canonical,
+          name: title, description, inLanguage: "pt-BR",
+          about: { "@type": "WebApplication", "@id": seo.origin + "/#marcador",
+            name: "Marcador de Truco", url: seo.origin + "/", applicationCategory: "GameApplication",
+            operatingSystem: "Web", inLanguage: "pt-BR", isAccessibleForFree: true }
+        })}</script>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta property="og:title" content={title} />
@@ -91,62 +91,34 @@ function TrucoScore({ title, description }: TrucoScoreProps) {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
       </Helmet>
-      <div className="h-screen overflow-y-auto relative overflow-x-hidden scrollbar-hide">
-        <section className="h-screen w-screen flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center w-full">
-            <div className="-mt-32 flex flex-col items-center justify-center text-[0.8rem] opacity-70">
-              <span className="ml-6">um oferecimento...</span>
-              <img src={logo42} alt="Imagem" className="w-[180px] h-[80px] rounded-[25px] mt-1" />
+      <main className="tabletop">
+        <section className="game" aria-label="Placar da partida">
+          <div className="teams">
+            <Counter team={teamOne} updateTeam={setTeamOne} handValue={handValue} onScore={resetHand} />
+            <div className="hand-controls">
+              <button className="truco" disabled={!nextValue || teamOne.points === 12 || teamTwo.points === 12} onClick={() => setHandLevel(handLevel + 1)}>
+                {handLevel === 0 ? "Truco" : nextValue ? `Pedir ${nextValue}` : "Vale 12"}
+              </button>
+              <button className="cancel-request" disabled={handLevel === 0} onClick={resetHand}>
+                Cancelar
+              </button>
             </div>
-            <div className="flex mt-[30px] items-center justify-center w-full max-w-[700px]">
-              <Counter
-                team={teamOne}
-                nameChange={nameChange}
-                pointsChange={pointsChange}
-              />
-              <div className="border border-white h-[350px] sm:h-[400px] opacity-50"/>
-              <Counter
-                team={teamTwo}
-                nameChange={nameChange}
-                pointsChange={pointsChange}
-              />
-            </div>
-            <div
-              className="cursor-pointer select-none flex gap-2 border rounded-2xl p-3 items-center justify-center active:scale-75 transition-all duration-300"
-              onClick={clear}
-            >
-              <span className="font-bold">zerar partida</span>
-              <BsXCircleFill color="#ff6c64" className="bg-white rounded-full" />
-            </div>
+            <Counter team={teamTwo} updateTeam={setTeamTwo} handValue={handValue} onScore={resetHand} />
           </div>
+          <button className="reset" onClick={clear}><BsArrowCounterclockwise /> Zerar partida</button>
         </section>
-        <section className="w-screen flex items-center justify-center">
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <article className="prose prose-lg prose-invert">
-              <h1 className="text-xl font-bold mb-6">{currentText.title}</h1>
-              <div className="space-y-6">
-                {currentText.text.split('\n\n').map((paragraph, index) => (
-                  <div key={index} className="space-y-4">
-                    {paragraph.split('\n').map((line, lineIndex) => {
-                      if (line.trim().match(/^\d+\./)) {
-                        const [number, ...content] = line.split('.');
-                        return (
-                          <div key={lineIndex}>
-                            <h2 className="text-lg font-semibold">{number}.{content.join('.')}</h2>
-                          </div>
-                        );
-                      }
-                      return <p key={lineIndex} className="text-md">{line}</p>;
-                    })}
-                  </div>
-                ))}
-              </div>
-            </article>
-          </div>
-        </section>
-      </div>
+        <article className="reading space-y-4 py-6">
+          <h1 className="text-xl font-semibold">{page.heading}</h1>
+          {page.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+          <nav aria-label="Guias do marcador" className="flex flex-wrap gap-x-5 gap-y-3">
+            {seo.pages.filter(other => other.path !== page.path).map(other => (
+              <Link className="underline" key={other.path} to={other.path}>{other.title}</Link>
+            ))}
+          </nav>
+        </article>
+      </main>
     </>
   );
 }
 
-export default TrucoScore; 
+export default TrucoScore;

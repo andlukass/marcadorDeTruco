@@ -1,0 +1,55 @@
+{
+  "origin": "https://www.marcadordetruco.com",
+  "pages": [
+    {
+      "path": "/",
+      "title": "Marcador de truco online",
+      "description": "Marque os pontos de Nós e Eles, peça truco e acompanhe a partida até 12 pontos pelo celular.",
+      "heading": "Como usar o marcador de truco",
+      "paragraphs": [
+        "Escolha um lado para cada dupla. Quando a mão terminar, toque no número grande ou no botão de soma da dupla vencedora. Um único toque registra o valor inteiro da mão.",
+        "Se a mão passou a valer três, toque em Truco antes de marcar. Depois que a dupla recebe os pontos, os dois botões de soma voltam a mostrar +1."
+      ]
+    },
+    {
+      "path": "/marcador-de-truco",
+      "title": "Como marcar uma mão de truco",
+      "description": "Aprenda a registrar uma mão simples ou trucada no marcador e veja quando o valor da próxima mão volta a um ponto.",
+      "heading": "Como marcar os pontos de uma mão",
+      "paragraphs": [
+        "Em uma mão simples, toque em +1 do lado vencedor. Se o placar estiver em 4 a 2 e Nós ganhar, ele passa para 5 a 2.",
+        "Se a mesa aceitou um truco, toque em Truco e confira se os dois lados mostram +3. Partindo dos mesmos 4 a 2, tocar no +3 de Eles deixa o placar em 4 a 5."
+      ]
+    },
+    {
+      "path": "/anotador-de-truco",
+      "title": "Como corrigir pontos no anotador de truco",
+      "description": "Veja como retirar um ponto lançado por engano, corrigir a equipe e cancelar um pedido de truco antes de anotar a mão.",
+      "heading": "Como corrigir uma anotação",
+      "paragraphs": [
+        "O botão de menos tira um ponto por toque. Se anotou três pontos para a dupla errada, retire os três dessa dupla. Em seguida, selecione Truco e marque +3 para a dupla certa.",
+        "Se apenas pediu truco por engano, toque em Cancelar antes de anotar o resultado. A mão volta a valer um ponto, mesmo depois de pedir seis ou nove."
+      ]
+    },
+    {
+      "path": "/placar-de-truco",
+      "title": "Placar de truco para duas duplas",
+      "description": "Identifique as duplas pelo nome, acompanhe o resultado até 12 e comece a próxima partida com as mesmas equipes.",
+      "heading": "Como organizar o placar das duplas",
+      "paragraphs": [
+        "Toque no lápis ao lado de Nós ou Eles, digite o nome da dupla e escolha Salvar. Combine quem fica de cada lado antes da primeira mão.",
+        "Quando uma equipe chega a 12, o botão Truco fica desativado. Para jogar a revanche, toque em Zerar partida. As duas equipes voltam a zero e os nomes continuam no placar."
+      ]
+    },
+    {
+      "path": "/contador-de-truco",
+      "title": "Contador de truco de 3, 6, 9 e 12 pontos",
+      "description": "Confira a sequência dos aumentos e como lançar o valor combinado pelas duplas sem somar ponto por ponto.",
+      "heading": "Quanto vale a mão no contador",
+      "paragraphs": [
+        "A mão começa valendo um ponto. O botão Truco muda o valor para três. A partir daí, Pedir 6, Pedir 9 e Pedir 12 aumentam o valor para as duas equipes.",
+        "O botão central mostra o próximo aumento disponível. Para saber quanto será lançado agora, leia o botão da equipe: se ele mostra +6, a dupla recebe seis pontos, até o limite de 12 no placar."
+      ]
+    }
+  ]
+}

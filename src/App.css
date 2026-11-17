@@ -1,56 +1,64 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./index.css";
 
-#root {
-  max-width: 1280px;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.87);
-  text-rendering: optimizeLegibility;
-  font-synthesis: none;
-  font-weight: 400;
-  line-height: 1.1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #f8faf9;
+  background: #103b30;
+  --paper: #fff;
+  --ink: #193b32;
+  --rule: #ffffff38;
 }
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  background-image: url("./assets/background.jpeg");
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
+  background: linear-gradient(#123b31dd, #123b31dd), url("./assets/background.jpeg") center / cover;
 }
-
-body::-webkit-scrollbar {
-  display: none;
+button, summary { cursor: pointer; touch-action: manipulation; }
+button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid #d18e2f; outline-offset: 3px; }
+.tabletop { max-width: 840px; margin: auto; padding: 0 clamp(16px, 5vw, 48px) 32px; }
+.game { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 24px 0; }
+.teams { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; }
+.team { display: flex; flex-direction: column; align-items: center; padding: 12px 8px; }
+.hand-controls { display: grid; grid-template-rows: 46px 44px; width: 102px; justify-items: center; }
+.cancel-request { min-height: 44px; padding: 0 8px; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.cancel-request:disabled { visibility: hidden; }
+.truco { min-width: 86px; min-height: 46px; border-radius: 24px; background: #f8faf9; color: var(--ink); font-weight: 650; }
+.reset, .team-name, .dialog-actions { display: flex; align-items: center; }
+.team-name { gap: 8px; justify-content: center; max-width: 100%; min-height: 44px; padding: 0 5px; font-size: clamp(19px, 3vw, 27px); font-weight: 650; }
+.team-name span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.team-name svg { flex-shrink: 0; font-size: 13px; }
+.score { width: 100%; text-align: center; font-size: clamp(76px, 17vw, 120px); font-weight: 650; line-height: 1.15; font-variant-numeric: proportional-nums; margin: 10px 0 20px; }
+.controls { display: flex; gap: clamp(8px, 2vw, 16px); }
+.controls button { display: flex; align-items: center; justify-content: center; padding: 0; width: 46px; height: 46px; border: 1px solid #ffffff78; border-radius: 50%; font-size: 18px; line-height: 1; }
+.controls button svg { flex-shrink: 0; width: 16px; height: 16px; }
+.controls button:first-child svg { width: 24px; height: 24px; }
+@media (max-width: 480px) {
+  .teams { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hand-controls { grid-row: 2; grid-column: 1 / -1; justify-self: center; margin-top: 12px; }
+  .team:last-child { border-left: 1px solid var(--rule); }
 }
-
-body {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
+.controls button:disabled, .truco:disabled { opacity: .36; cursor: default; }
+button:active:not(:disabled) { transform: translateY(1px); }
+.reset { gap: 8px; margin: 28px auto 0; min-height: 44px; padding: 0 18px; border-radius: 24px; border: 1px solid var(--rule); }
+.reading { border-block: 1px solid var(--rule); }
+.reading summary { padding: 18px 0; color: #d0ddd8; }
+.reading article { padding-bottom: 24px; line-height: 1.65; }
+.name-dialog {
+  margin: auto; padding: 28px; width: min(380px, calc(100vw - 32px));
+  border: 1px solid #dce5df; border-radius: 20px;
+  color: var(--ink); background: #f8faf9;
+  box-shadow: 0 24px 80px #051b194d;
+  text-align: left;
 }
-
-html::-webkit-scrollbar {
-  display: none;
+.name-dialog::backdrop { background: #071e18b8; backdrop-filter: blur(4px); }
+.name-dialog h2 { margin-bottom: 24px; font-size: 22px; font-weight: 650; letter-spacing: -.025em; }
+.name-dialog label { display: block; color: #52685f; font-size: 13px; font-weight: 500; }
+.name-dialog input {
+  display: block; width: 100%; margin: 8px 0 24px; padding: 12px 14px;
+  border: 1px solid #cbd8d0; border-radius: 10px;
+  background: white; color: var(--ink); font-size: 18px;
 }
-
-html {
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-}
-
-/* some browsers was not working with the html::-webkit-scrollbar */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.name-dialog input:focus { outline: 2px solid #357a5e; outline-offset: 2px; }
+.dialog-actions { gap: 10px; }
+.dialog-actions button { flex: 1; min-height: 46px; padding: 10px 14px; border: 1px solid #cbd8d0; border-radius: 10px; font-size: 14px; font-weight: 600; }
+.dialog-actions button:last-child { border-color: var(--ink); background: var(--ink); color: var(--paper); }

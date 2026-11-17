@@ -1,102 +1,51 @@
+import { useRef, type Dispatch, type SetStateAction } from "react";
+import { BsDash, BsPencil } from "react-icons/bs";
 import type { Team } from "../types";
-import ChangeName from "./ChangeName";
-import { useState, useEffect } from "react";
-import { BsPencilSquare } from "react-icons/bs";
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
 
 interface CounterProps {
   team: Team;
-  nameChange: (teamName: string, newName: string) => void;
-  pointsChange: (teamName: string, change: number) => void;
-  className?: string;
+  handValue: number;
+  onScore: () => void;
+  updateTeam: Dispatch<SetStateAction<Team>>;
 }
 
-function Counter(props: CounterProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [fontSize, setFontSize] = useState(35);
-  const [teamName, setTeamName] = useState("");
+export default function Counter({ team, updateTeam, handValue, onScore }: CounterProps) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const changePoints = (amount: number) => updateTeam(current => ({
+    ...current, points: Math.max(0, Math.min(12, current.points + amount)),
+  }));
 
-  useEffect(() => {
-    const length = props.team.name.length;
-    let newSize;
-    if (length >= 1 && length <= 4) {
-      setTeamName(props.team.name);
-      newSize = 45;
-    } else if (length > 4 && length <= 10) {
-      setTeamName(props.team.name);
-      newSize = 180 / length;
-    } else if (length > 10 && length < 20) {
-      setTeamName(breakLine(props.team.name));
-      newSize = 23;
-    } else {
-      setTeamName(breakLine(props.team.name).slice(0, 16) + "...");
-      newSize = 23;
-    }
-    setFontSize(newSize);
-  }, [props.team.name]);
-
-  const breakLine = (string: string) => {
-    let half = Math.floor(string.length / 2);
-    if (string.length > 16) {
-      half = 8;
-    }
-    const part1 = string.slice(0, half);
-    const part2 = string.slice(half, string.length);
-    const full = part1 + "-\n" + part2;
-    const spaces = string.split(" ").length - 1;
-    if (spaces) {
-      return string;
-    } else {
-      return full;
-    }
+  const awardHand = () => {
+    changePoints(handValue);
+    onScore();
   };
-
-  const onOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handleClick = (change: number) => {
-    props.pointsChange(props.team.name, change);
-  };
+  const awardLabel = `Somar ${handValue} ${handValue === 1 ? "ponto" : "pontos"} para ${team.name}`;
 
   return (
-    <>
-      <ChangeName
-        nameChange={props.nameChange}
-        teamName={props.team.name}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      />
-      <div className={`mx-auto flex flex-col items-center justify-center text-center select-none ${props.className}`}>
-        <div className="mx-auto mt-[50px] flex h-[13vh] flex-col items-center justify-center text-center cursor-pointer active:scale-95 transition-all duration-300" onClick={onOpen}>
-          <BsPencilSquare />
-          <div className="flex items-center justify-center text-center mt-1">
-            <h3 style={{ fontSize: `${fontSize}px`, whiteSpace: "pre-line" }}>
-              {teamName}
-            </h3>
-          </div>
-        </div>
-        <div className="flex items-center justify-center w-full cursor-pointer active:scale-[0.80] transition-all duration-300" onClick={() => handleClick(1)}>
-          <h1 className="text-[120px] font-bold">{props.team.points}</h1>
-        </div>
-        <div className="mb-[50px] flex cursor-pointer">
-          <div onClick={() => handleClick(-1)} className="flex items-center justify-center active:scale-[0.80] transition-all duration-300">
-            <div
-              className="flex h-[50px] w-[50px] items-center justify-center rounded-[50px] border-2 border-white bg-[rgb(75,140,82)] text-[30px] font-bold text-white m-5"
-              >
-              <FaMinus className="text-white w-4 h-4" />
-            </div>
-          </div>
-          <div onClick={() => handleClick(1)} className="flex items-center justify-center active:scale-[0.80] transition-all duration-300">
-            <div className="flex h-[50px] w-[50px] items-center justify-center rounded-[50px] border-2 border-white bg-[rgb(75,140,82)] text-[30px] font-bold text-white m-5">
-              <FaPlus className="text-white w-4 h-4" />
-            </div>
-          </div>
-        </div>
+    <section className="team" aria-label={team.name}>
+      <button className="team-name" aria-label={`Editar nome de ${team.name}`} onClick={() => dialog.current?.showModal()}>
+        <span>{team.name}</span><BsPencil />
+      </button>
+      <button className="score" disabled={team.points === 12} onClick={awardHand} aria-label={`${team.points} pontos. ${awardLabel}`}>
+        {team.points}
+      </button>
+      <div className="controls">
+        <button disabled={!team.points} aria-label={`Tirar ponto de ${team.name}`} onClick={() => changePoints(-1)}><BsDash aria-hidden="true" /></button>
+        <button disabled={team.points === 12} aria-label={awardLabel} onClick={awardHand}>+{handValue}</button>
       </div>
-    </>
+      <dialog className="name-dialog" ref={dialog} aria-label="Editar equipe" onClose={event => event.currentTarget.querySelector("form")?.reset()}>
+        <form method="dialog" onSubmit={event => {
+          const name = String(new FormData(event.currentTarget).get("name")).trim();
+          if (name) updateTeam(current => ({ ...current, name }));
+        }}>
+          <h2>Editar equipe</h2>
+          <label>Nome da equipe<input key={team.name} name="name" defaultValue={team.name} autoFocus required /></label>
+          <div className="dialog-actions">
+            <button type="button" onClick={() => dialog.current?.close()}>Cancelar</button>
+            <button>Salvar</button>
+          </div>
+        </form>
+      </dialog>
+    </section>
   );
 }
-
-export default Counter;
