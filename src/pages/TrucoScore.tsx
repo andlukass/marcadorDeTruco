@@ -108,7 +108,8 @@ function TrucoScore({ page }: { page: (typeof seo.pages)[number] }) {
           <button className="reset" onClick={clear}><BsArrowCounterclockwise /> Zerar partida</button>
         </section>
         <article className="reading space-y-4 py-6">
-          <h1 className="text-xl font-semibold">{page.heading}</h1>
+          <h1 className="text-xl font-semibold">{page.path === "/" ? page.title : page.heading}</h1>
+          {page.path === "/" && <h2 className="text-lg font-semibold">{page.heading}</h2>}
           {page.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
           <nav aria-label="Guias do marcador" className="flex flex-wrap gap-x-5 gap-y-3">
             {seo.pages.filter(other => other.path !== page.path).map(other => (
